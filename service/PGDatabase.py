@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 def executeMany(query, values):
     conn = psycopg2.connect(database="olympus", user="postgres", password="password", host="127.0.0.1", port="5432")
@@ -36,3 +37,20 @@ def executeQuery(query: str, type: str, params: tuple = None):
         return []
 
 
+def executeQueryWithReturn(query: str, params: tuple = None):
+    con = psycopg2.connect(database="olympus", user="postgres", password="password", host="127.0.0.1", port="5432")
+    try:
+        cur = con.cursor(cursor_factory=RealDictCursor)
+        print("Query: ", query)
+        if params:
+            cur.execute(query, params)
+        else:
+            cur.execute(query)
+        result = []
+        print("Query executed successfully")
+        result = cur.fetchall()
+        con.commit()
+        return result
+    except Exception as e:
+        print(e)
+        return []

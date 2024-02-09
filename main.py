@@ -7,6 +7,7 @@ import time
 def execute_main(stock_symbol: str):
     stock_data_service.get_stock_data(stock_symbol=stock_symbol)
     tech_indicators_df = Strategy.check_and_calculate_tech_indicators(stock_symbol=stock_symbol)
+    tech_indicators_df_2 = Strategy.check_and_calculate_tech_indicators_2_0(stock_symbol=stock_symbol)
     # piotroski_score = fundamental_indicator_service.get_piotroski_score(stock_symbol=stock_symbol)
     
 
@@ -31,6 +32,8 @@ def process_symbol(symbol):
 
 if __name__ == '__main__':
     list_of_symbols = get_symbols_from_csv('stock_exchange/nasdaq_screener.csv')
-    list_of_symbols.reverse()
-    with Pool(processes=20) as pool:
+    # list_of_symbols.reverse()
+    # list_of_symbols = [ 'AAPL', 'TSLA']
+    
+    with Pool(processes=40) as pool:
         pool.map(process_symbol, list_of_symbols)

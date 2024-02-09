@@ -1,7 +1,7 @@
 create_technical_indicators_table = """
             CREATE TABLE IF NOT EXISTS technical_indicators (
                 stock_symbol TEXT,
-                date BIGINT,
+                date date,
                 close decimal,
                 RSI decimal,
                 RSI_Signal decimal,
@@ -30,4 +30,11 @@ update_technical_indicators_table = """
             """
             
             
-    
+update_trade_decision = """
+            INSERT INTO technical_indicators (stock_symbol, date, trade_decision, seven_day_price_diff, seven_day_price_diff_percent)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (stock_symbol, date) DO UPDATE SET
+            trade_decision = excluded.trade_decision,
+            seven_day_price_diff = excluded.seven_day_price_diff,
+            seven_day_price_diff_percent = excluded.seven_day_price_diff_percent
+        """
