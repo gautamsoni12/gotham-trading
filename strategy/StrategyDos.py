@@ -34,6 +34,9 @@ def calculate_indicators(stock_data: pd.DataFrame) -> pd.DataFrame:
     # Calculate Simple Moving Average (SMA)
     sma_price = talib.SMA(stock_data['close'], timeperiod=5) / talib.SMA(stock_data['close'], timeperiod=20)
     
+    # Calculate 200 day exponential moving average
+    ema_200 = talib.EMA(stock_data['close'], timeperiod=200)
+    
     # Calculate Simple Moving Average (SMA)
     sma_volume = talib.SMA(stock_data['volume'], timeperiod=5) / talib.SMA(stock_data['volume'], timeperiod=20)
     
@@ -56,8 +59,7 @@ def calculate_indicators(stock_data: pd.DataFrame) -> pd.DataFrame:
     indicator_df['SMA_Price'] = sma_price
     indicator_df['SMA_Volume'] = sma_volume
     indicator_df['ATR'] = atr
-    
-    
+    indicator_df['EMA_200'] = ema_200
     
     
     print(indicator_df.tail())
@@ -66,7 +68,7 @@ def calculate_indicators(stock_data: pd.DataFrame) -> pd.DataFrame:
 
 def get_data_to_insert(stock_symbol, indicator_df: pd.DataFrame):
         return [(stock_symbol, row['close'], row['date'], row['RSI'], row['MACD'], row['macd_signal_line'], row['ADX'],  
-            row['BBands_Upper'], row['BBands_Middle'], row['BBands_Lower'], row['Stoch'], row['SMA_Price'], row['SMA_Volume'], row['ATR'], row['trade_decision'], row['seven_day_price_diff'], row['seven_day_price_diff_percent']) for index, row in indicator_df.iterrows()]
+            row['BBands_Upper'], row['BBands_Middle'], row['BBands_Lower'], row['Stoch'], row['SMA_Price'], row['SMA_Volume'], row['ATR'], row['EMA_200'] , row['trade_decision'], row['seven_day_price_diff'], row['seven_day_price_diff_percent']) for index, row in indicator_df.iterrows()]
         
         
 

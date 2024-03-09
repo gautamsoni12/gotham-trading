@@ -2,8 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn 
 from controller import stock, news
-from bson import json_util
-import json
+from routes import MarketRoutes, TechnicalIndicatorRoutes
 
 app = FastAPI()
 
@@ -14,6 +13,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(MarketRoutes.router, prefix="/market" , tags=["Market"])
+app.include_router(TechnicalIndicatorRoutes.router, prefix="/indicators" , tags=["Technical Indicators"])
+
 
 @app.get("/predictions")
 def get_stock_predictions(

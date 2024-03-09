@@ -14,6 +14,7 @@ create_technical_indicators_table = """
                 SMA_Price decimal,
                 SMA_Volume decimal,
                 ATR decimal,
+                EMA_200 decimal,
                 trade_decision INTEGER,
                 seven_day_price_diff decimal,
                 seven_day_price_diff_percent decimal,
@@ -22,8 +23,8 @@ create_technical_indicators_table = """
         """
         
 update_technical_indicators_table = """
-                INSERT INTO technical_indicators_two (stock_symbol, close, date, RSI, MACD, macd_signal_line, ADX, BBands_Upper, BBands_Middle, BBands_Lower, Stoch, SMA_Price, SMA_Volume, ATR, trade_decision, seven_day_price_diff, seven_day_price_diff_percent)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO technical_indicators_two (stock_symbol, close, date, RSI, MACD, macd_signal_line, ADX, BBands_Upper, BBands_Middle, BBands_Lower, Stoch, SMA_Price, SMA_Volume, ATR, EMA_200, trade_decision, seven_day_price_diff, seven_day_price_diff_percent)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (stock_symbol, date) DO UPDATE SET
                 close = excluded.close,
                 RSI = excluded.RSI,
@@ -37,6 +38,7 @@ update_technical_indicators_table = """
                 SMA_Price = excluded.SMA_Price,
                 SMA_Volume = excluded.SMA_Volume,
                 ATR = excluded.ATR,
+                EMA_200 = excluded.EMA_200,
                 trade_decision = excluded.trade_decision,
                 seven_day_price_diff = excluded.seven_day_price_diff,
                 seven_day_price_diff_percent = excluded.seven_day_price_diff_percent
